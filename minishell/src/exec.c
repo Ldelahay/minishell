@@ -30,7 +30,8 @@ int forking(char **args)
             return 0;
         i++;
     }
-    if (pid == 0) {
+    if (pid == 0)
+    {
         ret = exec_cl(args);
         if (ret == -1) {
             printf("minishell: command not found\n");

@@ -1,5 +1,6 @@
 #include "../inc/minshell.h"
 
+extern char **environ;
 
 int need_fork(char **args)
 {
@@ -35,6 +36,6 @@ int exec_cl(char **args)
 {
     int r;
 
-    r = execve(path_finder(args), args, NULL);
+    r = execve(path_finder(args), args, environ);
     return r;
 }

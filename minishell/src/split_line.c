@@ -1,5 +1,5 @@
 #include "../inc/minshell.h"
-
+/*
 char **split_line(char *line) 
 {
     int len = max_length(line);
@@ -73,3 +73,4 @@ int max_length(char *line)
     }
     return max;
 }
+*/
