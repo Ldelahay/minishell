@@ -24,6 +24,8 @@ int forking(t_cmd *cmd_list)
     t_cmd *current;
 
     current = cmd_list;
+    if (current == NULL)
+        return 1;
     while (current)
     {
         if (current->str != NULL && strcmp(current->str, "exit") == 0)

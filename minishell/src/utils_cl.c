@@ -4,13 +4,15 @@ extern char **environ;
 
 int need_fork(char **args)
 {
-    if (strcmp(args[0], "cd") == 0)
+    if (args[0] == NULL || strcmp(args[0], "cd") == 0)
         return 0;
     return 1;
 }
 
 char *path_finder(char **args)
 {
+    if (args[0] == NULL)
+        return NULL;
     if (strcmp(args[0], "ls") == 0)
         return "/bin/ls";
     if (strcmp(args[0], "pwd") == 0)
@@ -58,12 +60,18 @@ char **cmd_list_to_argv(t_cmd *cmd_list)
 
 int exec_cl(t_cmd *cmd_list)
 {
+    char *path;
     char **args = cmd_list_to_argv(cmd_list);
-    if (args == NULL) {
+    if (args == NULL)
+        return -1;
+    path = path_finder(args);
+    if (path == NULL)
+    {
+        free (args);
+        fprintf(stderr, "Command not found\n");
         return -1;
     }
-
-    int r = execve(path_finder(args), args, environ);
+    int r = execve(path, args, environ);
     free(args);
     return r;
 }
