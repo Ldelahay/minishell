@@ -1,29 +1,5 @@
 #include "../inc/minshell.h"
 
-void init_tokenizer(char ***tokens, char *token, int *token_count)
-{
-    *tokens = malloc(sizeof(char *) * MAX_TOKENS);
-    memset(token, 0, MAX_TOKEN_LENGTH);
-    *token_count = 0;
-}
-
-void add_token(char ***tokens, char *token, int *token_count)
-{
-    if (ft_strlen(token) > 0)
-    {
-        (*tokens)[*token_count] = ft_strdup(token);
-        (*token_count)++;
-        memset(token, 0, MAX_TOKEN_LENGTH);
-    }
-}
-
-void handle_special_char(char ***tokens, char *token, int *token_count, char c)
-{
-    add_token(tokens, token, token_count);
-    token[0] = c;
-    add_token(tokens, token, token_count);
-}
-
 static int ft_isspace(char c)
 {
     return (c == ' ' || c == '\t' || c == '\n' || c == '\r');
@@ -46,47 +22,37 @@ void handle_quote(char *line, char *token, int *j, int *i)
         (*i)++;
 }
 
-char **toker(char *line)
+void toker(char *line, t_cmd **cmd_list)
 {
-    int token_count;
-    char **tokens;
+    if (line == NULL || cmd_list == NULL)
+    {
+        printf("command list or line null\n");
+        return;
+    }
     char token[MAX_TOKEN_LENGTH] = {0};
-    init_tokenizer(&tokens, token, &token_count);
-    int i = 0;
-    int j = 0;
+    int i;
+    int j;
+
+    i = 0;
+    j = 0; 
 
     while (line[i])
     {
-        // Ignorer les espaces
+        memset(token, 0, MAX_TOKEN_LENGTH);
         while (line[i] && ft_isspace(line[i]))
             i++;
-        
-        // Traiter les caractères non espacés
         while (line[i] && !ft_isspace(line[i]))
         {
             if (line[i] == '"' || line[i] == '\'')
-                handle_quote(line, token, &j, &i); // Passer i par référence
-            else if (is_special_char(line[i]))
-            {
-                handle_special_char(&tokens, token, &token_count, line[i]);
-                j = 0; // Réinitialiser j après un caractère spécial
-            }
-            else 
-            {
-                token[j++] = line[i];
-                i++;
-            }
+                handle_quote(line, token, &j, &i);
+            else
+                token[j++] = line[i++];
         }
-        printf("token: %s\n", token);
-        add_token(&tokens, token, &token_count);
-        memset(token, 0, MAX_TOKEN_LENGTH);
-        j = 0;  // Réinitialiser j après avoir ajouté un token
+        if (j > 0) // If we have collected a token
+        {
+            t_cmd *new_node = create_cmd_node(token);
+            add_cmd_node(cmd_list, new_node);
+        }
+        j = 0;
     }
-    printf("token_count: %d\n", token_count);
-
-    // Allouer l'espace pour le dernier NULL
-    tokens = realloc(tokens, sizeof(char *) * (token_count + 1));
-    tokens[token_count] = NULL;
-
-    return tokens;
 }

@@ -1,58 +1,66 @@
 #include "../inc/minshell.h"
 
-int execute(char **args) {
-    if (gestion_commande(args) == 0)
-            return 0;
-    return 1;
-}
-
-int gestion_commande(char **args)
+int execute(t_cmd *cmd_list)
 {
-    if (need_fork(args) == 1)
-        return (forking(args));
-    else 
-        return (parent_exec(args));
+    if (gestion_commande(cmd_list) == 0)
+        return 0;
     return 1;
 }
 
-int forking(char **args)
+int gestion_commande(t_cmd *cmd_list)
+{
+    if (need_fork(cmd_list_to_argv(cmd_list)) == 1)
+        return (forking(cmd_list));
+    else 
+        return (parent_exec(cmd_list));
+    return 1;
+}
+
+int forking(t_cmd *cmd_list)
 {
     int status;
     pid_t pid;
     int ret;
-    int i;
+    t_cmd *current;
 
-    i = 0;
-    pid = fork();
-    while (args[i])
+    current = cmd_list;
+    while (current)
     {
-        if (strcmp(args[i], "exit") == 0)
+        if (current->str != NULL && strcmp(current->str, "exit") == 0)
             return 0;
-        i++;
+        current = current->next;
     }
+    pid = fork();
     if (pid == 0)
     {
-        ret = exec_cl(args);
+        ret = exec_cl(cmd_list);
         if (ret == -1) {
             printf("minishell: command not found\n");
-            exit(EXIT_FAILURE);
         }
         exit(EXIT_FAILURE);
-    } else if (pid < 0) {
-            printf("minishell: fork failed\n");
-    } else {
-        waitpid(pid, &status, WUNTRACED);
     }
+    else if (pid < 0)
+    {
+        printf("minishell: fork failed\n");
+        return -1;
+    }
+    else 
+        waitpid(pid, &status, WUNTRACED);
     return 1;
 }
 
-int parent_exec(char **args)
+int parent_exec(t_cmd *cmd_list)
 {
-    if (strcmp(args[0], "cd") == 0)
+    if (cmd_list == NULL)
+        return 1; // No command to execute
+
+    // Assuming the first command is the actual command and the second is its argument
+    if (strcmp(cmd_list->str, "cd") == 0)
     {
-        if (args[1] == NULL)
+        t_cmd *arg = cmd_list->next; // The argument to "cd"
+        if (arg == NULL || arg->str == NULL)
             printf("minishell: expected argument to \"cd\"\n");
-        else if (chdir(args[1]) != 0)
+        else if (chdir(arg->str) != 0)
             printf("repertoire introuvable\n");
         return 1;
     }

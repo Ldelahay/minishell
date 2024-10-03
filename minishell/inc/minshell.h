@@ -16,6 +16,17 @@
 #define MAX_TOKEN_LENGTH 256
 #define MAX_TOKENS 128
 
+typedef struct s_cmd
+{
+    char        *str;
+    int         type;
+    struct s_cmd *prev;
+    struct s_cmd *next;
+} t_cmd;
+
+//STRUCT
+t_cmd *create_cmd_node(char *str);
+void add_cmd_node(t_cmd **args, t_cmd *new_node);
 
 //PARSING
 
@@ -23,27 +34,25 @@ char *ft_strchr(const char *str, int search_str);
 char *ft_strdup(const char *s1);
 int ft_strlen(char *str);
 int is_special_char(char c);
+void ft_get_type(char *str);
 void *ft_memset(void *ptr, int value, size_t num);
 
 //TOKENIZATION
 
-char **toker(char *line);
-void add_token(char ***tokens, char *token, int *token_count);
+void toker(char *line, t_cmd **cmd_list);
 void handle_quote(char *line, char *token, int *j, int *i);
-void handle_special_char(char ***tokens, char *token, int *token_count, char c);
-void init_tokenizer(char ***tokens, char *token, int *token_count);
 
 //EXECUTION
-int     execute(char **args);
-char    **split_line(char *line);
+char    **cmd_list_to_argv(t_cmd *cmd_list);
+int     execute(t_cmd *cmd_list);
 int     arg_nbr(char *line);
 int     check_delimiter(char c);
 int     max_length(char *line);
-int     gestion_commande(char **args);
-int     exec_cl(char **args);
+int     gestion_commande(t_cmd *cmd_list);
+int     exec_cl(t_cmd *cmd_list);
 char    *path_finder(char **args);
-int     forking(char **args);
-int     parent_exec(char **args);
+int     forking(t_cmd *cmd_list);
+int     parent_exec(t_cmd *cmd_list);
 int     need_fork(char **args);
 
 

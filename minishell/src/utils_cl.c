@@ -31,11 +31,39 @@ char *path_finder(char **args)
         return "/bin/clear";
     return NULL;
 }
-
-int exec_cl(char **args)
+// Helper function to convert t_cmd list to char**
+char **cmd_list_to_argv(t_cmd *cmd_list)
 {
-    int r;
+    int count = 0;
+    t_cmd *current = cmd_list;
+    while (current != NULL) {
+        count++;
+        current = current->next;
+    }
 
-    r = execve(path_finder(args), args, environ);
+    char **argv = malloc((count + 1) * sizeof(char *));
+    if (argv == NULL) {
+        return NULL;
+    }
+
+    current = cmd_list;
+    for (int i = 0; i < count; i++) {
+        argv[i] = current->str;
+        current = current->next;
+    }
+    argv[count] = NULL;
+
+    return argv;
+}
+
+int exec_cl(t_cmd *cmd_list)
+{
+    char **args = cmd_list_to_argv(cmd_list);
+    if (args == NULL) {
+        return -1;
+    }
+
+    int r = execve(path_finder(args), args, environ);
+    free(args);
     return r;
 }
