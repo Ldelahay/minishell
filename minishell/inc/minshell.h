@@ -29,11 +29,11 @@ void *ft_memset(void *ptr, int value, size_t num);
 
 char **toker(char *line);
 void add_token(char ***tokens, char *token, int *token_count);
-void handle_quote(char **line, char *token, int *j);
+void handle_quote(char *line, char *token, int *j, int *i);
 void handle_special_char(char ***tokens, char *token, int *token_count, char c);
 void init_tokenizer(char ***tokens, char *token, int *token_count);
 
-//LUCA'S SHIT
+//EXECUTION
 int     execute(char **args);
 char    **split_line(char *line);
 int     arg_nbr(char *line);

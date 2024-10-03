@@ -24,9 +24,7 @@ int main(int argc, char **argv) {
                 printf("arg[%d]: %s\n", i, args[i]);
             }
         }
-
         status = execute(args);
-
         free(line);
         free(args);
     }
