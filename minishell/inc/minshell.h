@@ -32,12 +32,15 @@ void add_cmd_node(t_cmd **args, t_cmd *new_node);
 
 //PARSING
 
-char *ft_strchr(const char *str, int search_str);
-char *ft_strdup(const char *s1);
-int ft_strlen(char *str);
 int is_special_char(char c);
 void ft_get_type(char *str);
 void *ft_memset(void *ptr, int value, size_t num);
+
+//UTILS
+void ft_putstr(char *s);
+char *ft_strchr(const char *str, int search_str);
+char *ft_strdup(const char *s1);
+int ft_strlen(char *str);
 
 //TOKENIZATION
 
@@ -55,6 +58,9 @@ int     exec_cl(t_cmd *cmd_list);
 int     forking(t_cmd *cmd_list);
 int     parent_exec(t_cmd *cmd_list);
 int     need_fork(char **args);
+
+//BUILT-INS
+void    ft_echo(char **strs, int n);
 
 //PIPES
 //int piper(t_cmd *cmd_list);
