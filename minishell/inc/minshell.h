@@ -9,7 +9,7 @@
 #include <sys/types.h>
 #include <readline/readline.h>
 #include <readline/history.h>
-
+#include <stdbool.h> // Added for the bool type in the merged version
 
 #define TOKEN_BUFSIZE 64
 #define TOKEN_DELIMITERS " \t\r\n\a"
@@ -20,7 +20,9 @@ typedef struct s_cmd
 {
 	char        *str;
 	int         type;
-	int 	   	pipe_count;
+	int         pipe_count;
+	bool        is_pipe; // Added from the second version
+	int         command_index; // Added from the second version
 	
 	struct s_cmd *prev;
 	struct s_cmd *next;
@@ -31,19 +33,17 @@ t_cmd *create_cmd_node(char *str);
 void add_cmd_node(t_cmd **args, t_cmd *new_node);
 
 //PARSING
-
 int is_special_char(char c);
 void ft_get_type(char *str);
 void *ft_memset(void *ptr, int value, size_t num);
 
 //UTILS
-void ft_putstr(char *s);
+void ft_putstr(char *s); // Only in the first version, consider if needed
 char *ft_strchr(const char *str, int search_str);
 char *ft_strdup(const char *s1);
 int ft_strlen(char *str);
 
 //TOKENIZATION
-
 void toker(char *line, t_cmd **cmd_list);
 void handle_quote(char *line, char *token, int *j, int *i);
 
@@ -60,19 +60,19 @@ int     parent_exec(t_cmd *cmd_list);
 int     need_fork(char **args);
 
 //BUILT-INS
-void    ft_echo(char **strs, int n);
+void    ft_echo(char **strs, int n); // Only in the first version, consider if needed
 
 //PIPES
-//int piper(t_cmd *cmd_list);
-//int exec_pipes(t_cmd *cmd_list);
+int     piper(t_cmd *cmd_list);
+int     exec_pipes(t_cmd *cmd_list);
+void    pipe_indexer(t_cmd *cmd_list); // Added from the second version
+char    **generate_command(t_cmd *cmd_list); // Added from the second version
+void    pipe_parsing(t_cmd *cmd_list); // Added from the second version
 
 //PATH_FINDER
+char    *path_finder(char *fct);
+char    **div_path(char *path_env);
+char    *path_create(char *path_dir, char *fct);
+int     my_strncmp_from_index(const char *str1, const char *str2, int i);
 
-char	*path_finder(char *fct);
-char	**div_path(char *path_env);
-char	*path_create(char *path_dir, char *fct);
-int		my_strncmp_from_index(const char *str1, const char *str2, int i);
-
-
-
-#endif 
+#endif

@@ -31,7 +31,7 @@ void handle_quote(char *line, char *token, int *j, int *i)
 
 void toker(char *line, t_cmd **cmd_list)
 {
-    if (line == NULL || cmd_list == NULL)
+    if (line == NULL || cmd_list == NULL || !line[0])
     {
         printf("command list or line null\n");
         return;

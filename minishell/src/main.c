@@ -35,12 +35,9 @@ int main(int argc, char **argv) {
 		if (line && *line)
 			add_history(line);
 		toker(line, cmd_list);
-/*		if (cmd_list && *cmd_list)
-		{
-			printf("Arguments:\n");
-		for (current_node = *cmd_list; current_node != NULL; current_node = current_node->next)
-			printf("%s\n", current_node->str); // Print each command/argument
-		}*/
+		// The commented-out section for printing arguments is removed in the merged version
+		//get_cmd_types(cmd_list); // Use get_cmd_types from the first main
+		pipe_parsing(*cmd_list); // Use pipe_parsing from the second main
 		status = execute(*cmd_list);
 		free(line);
 		free_cmds(*cmd_list);

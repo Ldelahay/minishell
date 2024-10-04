@@ -10,3 +10,4 @@ void ft_putstr(char *s)
         }
     }
 }
+

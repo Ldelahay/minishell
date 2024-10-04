@@ -1,12 +1,14 @@
 #include "../inc/minshell.h"
 
 /*
-void ft_get_type(char *str)
+void get_cmd_types(t_cmd *cmd_list)
 {
-    if (ft_strcmp(str, "") == 0)
-        return NULL;
-}
-*/
+    while (cmd_list->next)
+    {
+        if ft_strcmp()
+    }
+} */
+
 t_cmd *create_cmd_node(char *str)
 {
     t_cmd *new_node = malloc(sizeof(t_cmd));
@@ -20,6 +22,7 @@ t_cmd *create_cmd_node(char *str)
     }
     new_node->prev = NULL;
     new_node->next = NULL;
+    new_node->command_index = 0;
     return new_node;
 }
 void add_cmd_node(t_cmd **args, t_cmd *new_node)
