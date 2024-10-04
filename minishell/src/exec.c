@@ -11,8 +11,8 @@ int gestion_commande(t_cmd *cmd_list)
 {
     if (need_fork(cmd_list_to_argv(cmd_list)) == 1)
         return (forking(cmd_list));
-    else if (cmd_list->pipe_count > 0)
-        return (piper(cmd_list));
+    //else if (cmd_list->pipe_count > 0)
+    //    return (piper(cmd_list));
     else 
         return (parent_exec(cmd_list));
     return 1;

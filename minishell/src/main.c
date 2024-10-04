@@ -15,7 +15,6 @@ static void free_cmds(t_cmd *cmd_list) {
 int main(int argc, char **argv) {
 	char *line;
 	t_cmd **cmd_list;
-	t_cmd *current_node;
 	int status;
 
 	line = NULL;

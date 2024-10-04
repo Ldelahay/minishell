@@ -21,7 +21,6 @@ typedef struct s_cmd
 	char        *str;
 	int         type;
 	int 	   	pipe_count;
-	bool		is_pipe;
 	
 	struct s_cmd *prev;
 	struct s_cmd *next;
@@ -56,6 +55,10 @@ int     exec_cl(t_cmd *cmd_list);
 int     forking(t_cmd *cmd_list);
 int     parent_exec(t_cmd *cmd_list);
 int     need_fork(char **args);
+
+//PIPES
+//int piper(t_cmd *cmd_list);
+//int exec_pipes(t_cmd *cmd_list);
 
 //PATH_FINDER
 

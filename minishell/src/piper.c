@@ -1,6 +1,5 @@
 #include "../inc/minshell.h"
-
-
+/*
 int piper(t_cmd *cmd_list)
 {
 	int r;
@@ -16,3 +15,4 @@ int exec_pipes(t_cmd *cmd_list)
 	int pipefd[cmd_list->pipe_count];
 	
 }
+*/

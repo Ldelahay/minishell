@@ -7,19 +7,26 @@ static int ft_isspace(char c)
 
 void handle_quote(char *line, char *token, int *j, int *i)
 {
-    char quote_type = line[*i];  // Utiliser *i pour accéder au caractère actuel
-    (*i)++;  // Avancer après le guillemet ouvrant
+    char quote_type = line[*i];
+    (*i)++; // Move past the opening quote
 
-    // Ajouter les caractères entre les guillemets
-    while (line[*i] != quote_type && line[*i] != '\0')
+    while (line[*i] != '\0')
     {
-        token[(*j)++] = line[*i];
+        if (line[*i] == quote_type)
+        {
+            // If we find the closing quote, move past it and return
+            (*i)++;
+            return;
+        }
+        else if (*j < MAX_TOKEN_LENGTH - 1)
+        {
+            // Add characters inside the quotes to the token
+            token[(*j)++] = line[*i];
+        }
         (*i)++;
     }
-
-    // Si on rencontre le guillemet fermant, avancer d'un pas
-    if (line[*i] == quote_type)
-        (*i)++;
+    // If the loop exits without finding a closing quote, we simply return.
+    // This effectively ignores the unclosed quote.
 }
 
 void toker(char *line, t_cmd **cmd_list)
@@ -36,7 +43,7 @@ void toker(char *line, t_cmd **cmd_list)
     i = 0;
     j = 0; 
 
-    while (line[i])
+    while (line[i] != '\0')
     {
         memset(token, 0, MAX_TOKEN_LENGTH);
         while (line[i] && ft_isspace(line[i]))
@@ -45,8 +52,11 @@ void toker(char *line, t_cmd **cmd_list)
         {
             if (line[i] == '"' || line[i] == '\'')
                 handle_quote(line, token, &j, &i);
-            else
-                token[j++] = line[i++];
+            else if(!ft_isspace(line[i]))
+                token[j++] = line[i];
+            if (line[i] != '\0')
+                i++;
+            else break;
         }
         if (j > 0) // If we have collected a token
         {
@@ -56,3 +66,16 @@ void toker(char *line, t_cmd **cmd_list)
         j = 0;
     }
 }
+
+/*
+The Valgrind output indicates that the issue is not 
+directly related to the tokenization process
+shown in the provided code snippet. 
+Instead, the problem lies in the 
+`path_create` and `path_finder` functions, 
+as mentioned in the Valgrind output. 
+The error `Conditional jump or move depends on 
+uninitialized value(s)` suggests that these 
+functions are using variables that have not been 
+initialized before their use.
+*/
