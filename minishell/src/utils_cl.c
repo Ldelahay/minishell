@@ -8,31 +8,6 @@ int need_fork(char **args)
         return 0;
     return 1;
 }
-
-char *path_finder(char **args)
-{
-    if (args[0] == NULL)
-        return NULL;
-    if (strcmp(args[0], "ls") == 0)
-        return "/bin/ls";
-    if (strcmp(args[0], "pwd") == 0)
-        return "/bin/pwd";
-    if (strcmp(args[0], "cat") == 0)
-        return "/bin/cat";
-    if (strcmp(args[0], "echo") == 0)
-        return "/bin/echo";
-    if (strcmp(args[0], "touch") == 0)
-        return "/bin/touch";
-    if (strcmp(args[0], "mkdir") == 0)
-        return "/bin/mkdir";
-    if (strcmp(args[0], "rm") == 0)
-        return "/bin/rm";
-    if (strcmp(args[0], "rmdir") == 0)
-        return "/bin/rmdir";
-    if (strcmp(args[0], "clear") == 0)
-        return "/bin/clear";
-    return NULL;
-}
 // Helper function to convert t_cmd list to char**
 char **cmd_list_to_argv(t_cmd *cmd_list)
 {
@@ -64,7 +39,7 @@ int exec_cl(t_cmd *cmd_list)
     char **args = cmd_list_to_argv(cmd_list);
     if (args == NULL)
         return -1;
-    path = path_finder(args);
+    path = path_finder(args[0]);
     if (path == NULL)
     {
         free (args);

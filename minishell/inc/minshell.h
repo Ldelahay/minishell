@@ -18,10 +18,13 @@
 
 typedef struct s_cmd
 {
-    char        *str;
-    int         type;
-    struct s_cmd *prev;
-    struct s_cmd *next;
+	char        *str;
+	int         type;
+	int 	   	pipe_count;
+	bool		is_pipe;
+	
+	struct s_cmd *prev;
+	struct s_cmd *next;
 } t_cmd;
 
 //STRUCT
@@ -50,10 +53,16 @@ int     check_delimiter(char c);
 int     max_length(char *line);
 int     gestion_commande(t_cmd *cmd_list);
 int     exec_cl(t_cmd *cmd_list);
-char    *path_finder(char **args);
 int     forking(t_cmd *cmd_list);
 int     parent_exec(t_cmd *cmd_list);
 int     need_fork(char **args);
+
+//PATH_FINDER
+
+char	*path_finder(char *fct);
+char	**div_path(char *path_env);
+char	*path_create(char *path_dir, char *fct);
+int		my_strncmp_from_index(const char *str1, const char *str2, int i);
 
 
 
