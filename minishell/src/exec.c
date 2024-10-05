@@ -14,8 +14,7 @@ int gestion_commande(t_cmd *cmd_list)
     else if (need_fork(cmd_list_to_argv(cmd_list)) == 1)
         return (forking(cmd_list));
     else
-        return (parent_exec(cmd_list));
-    return 1;
+        return (change_dir(cmd_list)); // in cd.c need to fix cd closing program
 }
 
 int forking(t_cmd *cmd_list)
@@ -27,7 +26,7 @@ int forking(t_cmd *cmd_list)
 
     current = cmd_list;
     if (current == NULL)
-        return 1;
+        return -1;
     while (current)
     {
         if (current->str != NULL && strcmp(current->str, "exit") == 0)
@@ -40,33 +39,18 @@ int forking(t_cmd *cmd_list)
         ret = exec_cl(cmd_list);
         if (ret == -1) {
             printf("minishell: command not found\n");
+            exit(EXIT_FAILURE);
         }
-        exit(EXIT_FAILURE);
+        exit(EXIT_SUCCESS);
     }
     else if (pid < 0)
     {
         printf("minishell: fork failed\n");
-        return -1;
+        return -2;
     }
     else 
-        waitpid(pid, &status, WUNTRACED);
-    return 1;
-}
-
-int parent_exec(t_cmd *cmd_list)
-{
-    if (cmd_list == NULL)
-        return 1; // No command to execute
-
-    // Assuming the first command is the actual command and the second is its argument
-    if (strcmp(cmd_list->str, "cd") == 0)
     {
-        t_cmd *arg = cmd_list->next; // The argument to "cd"
-        if (arg == NULL || arg->str == NULL)
-            printf("minishell: expected argument to \"cd\"\n");
-        else if (chdir(arg->str) != 0)
-            printf("repertoire introuvable\n");
+        waitpid(pid, &status, WUNTRACED);
         return 1;
     }
-    return 1;
 }

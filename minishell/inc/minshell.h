@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <signal.h>
 #include <unistd.h>
 #include <sys/wait.h>
 #include <sys/types.h>
@@ -39,7 +40,6 @@ typedef struct s_cmd
 	int			exit_status;
 	int         type;
 	int         pipe_count;
-	bool        is_pipe; // Added from the second version
 	int         command_index; // Added from the second version
 	
 	struct s_cmd *prev;
@@ -52,7 +52,7 @@ void add_cmd_node(t_cmd **args, t_cmd *new_node);
 
 //PARSING
 int is_special_char(char c);
-void ft_get_type(char *str) {}
+void get_cmd_types(t_cmd *cmd_list);
 void *ft_memset(void *ptr, int value, size_t num);
 
 //UTILS
@@ -69,17 +69,17 @@ void handle_quote(char *line, char *token, int *j, int *i);
 //EXECUTION
 char    **cmd_list_to_argv(t_cmd *cmd_list);
 int     execute(t_cmd *cmd_list);
-int     arg_nbr(char *line) {}
-int     check_delimiter(char c) {}
-int     max_length(char *line) {}
+int     arg_nbr(char *line) ;
+int     check_delimiter(char c);
+int     max_length(char *line);
 int     gestion_commande(t_cmd *cmd_list);
 int     exec_cl(t_cmd *cmd_list);
 int     forking(t_cmd *cmd_list);
-int     parent_exec(t_cmd *cmd_list);
 int     need_fork(char **args);
 
 //BUILT-INS
 void    ft_echo(char **strs, int n); // Only in the first version, consider if needed
+int     change_dir(t_cmd *cmd_list);
 
 //PIPES
 int     piper(t_cmd *cmd_list);

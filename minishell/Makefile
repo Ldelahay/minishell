@@ -6,8 +6,8 @@ SRC_DIR = src
 OBJ_DIR = obj
 
 # Fichiers sources et objets
-SRC_FILES = $(wildcard $(SRC_DIR)/*.c) #changer le wildcard avant de rendre le projet
-OBJ_FILES = $(SRC_FILES:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+SRC_FILES = $(wildcard $(SRC_DIR)/*.c $(SRC_DIR)/builtins/*.c)
+OBJ_FILES = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRC_FILES))
 
 # Options de compilation
 CC = gcc
@@ -24,6 +24,7 @@ $(NAME): $(OBJ_FILES)
 	$(CC) $(CFLAGS) $(OBJ_FILES) -o $@ $(LDFLAGS)  
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
+	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJ_DIR):

@@ -13,7 +13,6 @@ static void free_cmds(t_cmd *cmd_list)
 	}
 }
 
-
 static void minishell(t_cmd **cmd_list)
 {
 	int status;
@@ -24,10 +23,15 @@ static void minishell(t_cmd **cmd_list)
 	while (status)
 	{
 		line = readline("minishell@localhost:~$ ");
+		if (line == NULL)
+		{
+			printf("\nExit\n");
+			break ;
+		}
 		if (line && *line)
 			add_history(line);
 		toker(line, cmd_list);
-		get_cmd_types(cmd_list);
+		get_cmd_types(*cmd_list);
 		pipe_parsing(*cmd_list); // Use pipe_parsing from the second main
 		status = execute(*cmd_list);
 		free(line);
@@ -35,12 +39,28 @@ static void minishell(t_cmd **cmd_list)
 		*cmd_list = NULL;
 	}
 }
+static void sigint_handler(int sig_num)
+{
+	(void)sig_num;
+    printf("\nminishell@localhost:~$ ");
+    fflush(stdout);
+}
+
+static void sigquit_handler(int sig_num)
+{
+	(void)sig_num;
+    printf("\nQuit (core dumped)\n");
+    exit(0);
+}
 int main(int argc, char **argv)
 {
 	t_cmd **cmd_list;
 
 	(void)argc;
 	(void)argv;
+
+	signal(SIGINT, sigint_handler);
+    signal(SIGQUIT, sigquit_handler); 
 
 	cmd_list = malloc(sizeof(t_cmd*));
 	if (cmd_list == NULL) {

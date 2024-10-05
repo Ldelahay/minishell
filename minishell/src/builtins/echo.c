@@ -1,4 +1,4 @@
-#include "../inc/minshell.h"
+#include "../../inc/minshell.h"
 
 static int ft_strslen(char **strs)
 {
