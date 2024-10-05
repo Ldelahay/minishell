@@ -1,6 +1,7 @@
 #include "../inc/minshell.h"
 
-static void free_cmds(t_cmd *cmd_list) {
+static void free_cmds(t_cmd *cmd_list)
+{
 	t_cmd *current_node = cmd_list;
 	t_cmd *next_node;
 
@@ -12,13 +13,32 @@ static void free_cmds(t_cmd *cmd_list) {
 	}
 }
 
-int main(int argc, char **argv) {
-	char *line;
-	t_cmd **cmd_list;
+
+static void minishell(t_cmd **cmd_list)
+{
 	int status;
+	char *line;
 
 	line = NULL;
 	status = 1;
+	while (status)
+	{
+		line = readline("minishell@localhost:~$ ");
+		if (line && *line)
+			add_history(line);
+		toker(line, cmd_list);
+		get_cmd_types(cmd_list);
+		pipe_parsing(*cmd_list); // Use pipe_parsing from the second main
+		status = execute(*cmd_list);
+		free(line);
+		free_cmds(*cmd_list);
+		*cmd_list = NULL;
+	}
+}
+int main(int argc, char **argv)
+{
+	t_cmd **cmd_list;
+
 	(void)argc;
 	(void)argv;
 
@@ -28,21 +48,7 @@ int main(int argc, char **argv) {
 		return 1; // Exit if memory allocation fails
 	}
 	*cmd_list = NULL; // Ensure the list is initially empty
-
-	while (status)
-	{
-		line = readline("minishell@localhost:~$ ");
-		if (line && *line)
-			add_history(line);
-		toker(line, cmd_list);
-		// The commented-out section for printing arguments is removed in the merged version
-		//get_cmd_types(cmd_list); // Use get_cmd_types from the first main
-		pipe_parsing(*cmd_list); // Use pipe_parsing from the second main
-		status = execute(*cmd_list);
-		free(line);
-		free_cmds(*cmd_list);
-		*cmd_list = NULL;
-	}
+	minishell(cmd_list);
 	free(cmd_list);
 	return 0;
 }

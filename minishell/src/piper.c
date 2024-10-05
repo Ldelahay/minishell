@@ -1,6 +1,5 @@
 #include "../inc/minshell.h"
 
-
 int piper(t_cmd *cmd_list)
 {
 	int r;
@@ -76,7 +75,7 @@ char **generate_command (t_cmd *cmd_list)
 	command = malloc(sizeof(char) * 256 * 80);
 	if (command == NULL)
 		return NULL;
-	while (current && current->is_pipe == false)
+	while (current && current->type != CMD_TYPE_PIPE)
 	{
 		while (current->str[i])
 		{
@@ -99,7 +98,7 @@ void pipe_indexer (t_cmd *cmd_list)
 	current = cmd_list;
 	while (current)
 	{
-		if (current->is_pipe == true)
+		if (current->type == CMD_TYPE_PIPE)
 		{
 			i--;
 			if (current->next)
@@ -122,11 +121,8 @@ void pipe_parsing(t_cmd *cmd_list)
 	current = cmd_list;
 	while (current)
 	{
-		if (strcmp(current->str, "|") == 0)
-		{
-			current->is_pipe = true;
+		if (current->type == CMD_TYPE_PIPE)
 			i++;
-		}
 		current = current->next;
 	}
 	cmd_list->pipe_count = i;

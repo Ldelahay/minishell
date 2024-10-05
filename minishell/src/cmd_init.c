@@ -1,13 +1,26 @@
 #include "../inc/minshell.h"
 
-/*
 void get_cmd_types(t_cmd *cmd_list)
 {
-    while (cmd_list->next)
+    while (cmd_list != NULL)
     {
-        if ft_strcmp()
+        if (ft_strcmp(cmd_list->str, "|") == 0)
+            cmd_list->type = CMD_TYPE_PIPE;
+        else if (ft_strcmp(cmd_list->str, "<") == 0)
+            cmd_list->type = CMD_TYPE_REDIRECT_IN;
+        else if (ft_strcmp(cmd_list->str, ">") == 0)
+            cmd_list->type = CMD_TYPE_REDIRECT_OUT;
+        else if (ft_strcmp(cmd_list->str, ">>") == 0)
+            cmd_list->type = CMD_TYPE_REDIRECT_APPEND;
+        else if (ft_strcmp(cmd_list->str, "<<") == 0)
+            cmd_list->type = CMD_TYPE_REDIRECT_IN_SYMBOL;
+        else if (cmd_list->prev == NULL || cmd_list->prev->type == CMD_TYPE_PIPE)
+            cmd_list->type = CMD_TYPE_COMMAND;
+        else
+            cmd_list->type = CMD_TYPE_ARG;
+        cmd_list = cmd_list->next;         
     }
-} */
+}
 
 t_cmd *create_cmd_node(char *str)
 {
@@ -20,6 +33,7 @@ t_cmd *create_cmd_node(char *str)
         free(new_node);
         return NULL;
     }
+    new_node->exit_status = 0;
     new_node->prev = NULL;
     new_node->next = NULL;
     new_node->command_index = 0;

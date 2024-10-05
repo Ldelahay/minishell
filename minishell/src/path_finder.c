@@ -88,13 +88,13 @@ char   *path_create(char *path_dir, char *fct)
     return path;
 }
 
-int my_strncmp_from_index(const char *str1, const char *str2, int i) {
+int my_strncmp_from_index(const char *str1, const char *str2, int i)
+{
     int j;
 
     j = 0;
-    if (i < 0 || str1[i] == '\0') {
+    if (i < 0 || str1[i] == '\0')
         return 0;
-    }
     while (str1[i] && str2[j]) {
         if (str1[i] != str2[j]) {
             return (unsigned char)str1[i] - (unsigned char)str2[j];
