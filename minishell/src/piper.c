@@ -118,9 +118,13 @@ void pipe_parsing(t_cmd *cmd_list)
 	int i;
 
 	i = 0;
+	if (cmd_list == NULL)
+		return ;
 	current = cmd_list;
 	while (current)
 	{
+		if (current == NULL)
+			break;
 		if (current->type == CMD_TYPE_PIPE)
 			i++;
 		current = current->next;

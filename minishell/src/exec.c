@@ -2,6 +2,8 @@
 
 int execute(t_cmd *cmd_list)
 { // CHECK FOR BUILTINS HERE
+    if (cmd_list == NULL)
+        return -1;
     if(gestion_commande(cmd_list) == 0)
         return 0;
     return 1;

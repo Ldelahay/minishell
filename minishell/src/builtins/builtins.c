@@ -13,7 +13,9 @@ int builtin_check(char **args)
         printf("invalid args/n");
         return 0;
     }
-    if (ft_strcmp(args[i],"cd") == 0)
+    if (ft_strcmp(args[i], "exit") == 0)
+        ft_exit(1);
+    else if (ft_strcmp(args[i],"cd") == 0)
     {
         change_dir(args);
         return 1;
@@ -32,6 +34,11 @@ int builtin_check(char **args)
     else if (ft_strcmp(args[i], "pwd") == 0)
     {
         ft_pwd();
+        return 1;
+    }
+    else if (ft_strcmp(args[i],"env") == 0)
+    {
+        ft_env(environ);
         return 1;
     }
     return (0);

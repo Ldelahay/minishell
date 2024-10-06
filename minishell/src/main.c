@@ -41,17 +41,18 @@ static void minishell(t_cmd **cmd_list)
 }
 static void sigint_handler(int sig_num)
 {
-	(void)sig_num;
+    (void)sig_num;
     printf("\nminishell@localhost:~$ ");
     fflush(stdout);
 }
 
 static void sigquit_handler(int sig_num)
 {
-	(void)sig_num;
+    (void)sig_num;
     printf("\nQuit (core dumped)\n");
     exit(0);
 }
+
 int main(int argc, char **argv)
 {
 	t_cmd **cmd_list;

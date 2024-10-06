@@ -1,7 +1,5 @@
 #include "../inc/minshell.h"
 
-extern char **environ;
-
 int need_fork(char **args)
 {
     if (args[0] == NULL || strcmp(args[0], "cd") == 0)

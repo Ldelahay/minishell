@@ -18,6 +18,9 @@
 #define MAX_TOKEN_LENGTH 256
 #define MAX_TOKENS 128
 
+extern char **environ;
+
+
 typedef enum e_cmd_type
 {
     CMD_TYPE_COMMAND, // Represents a command
@@ -80,10 +83,13 @@ int     forking(t_cmd *cmd_list);
 int     need_fork(char **args);
 
 //BUILT-INS
-int builtin_check(char **args);
+int     builtin_check(char **args);
+void    ft_env(char **env);
 void    ft_echo(char **strs, int n); // Only in the first version, consider if needed
 int     change_dir(char **args);
 int     ft_pwd(void);
+void    ft_exit(int status);
+
 
 
 //PIPES
