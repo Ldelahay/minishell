@@ -19,10 +19,6 @@ int change_dir(char **args)
     {
         path = args[1];
     }
-    if (chdir(path) != 0) 
-    {
-        perror("minishell: cd error"); // Use perror to print the error related to chdir
-        return -1; // Indicate chdir failure
-    }
+    chdir(path);
     return 1; // Success
 }

@@ -22,6 +22,7 @@ void get_cmd_types(t_cmd *cmd_list)
     }
 }
 
+
 t_cmd *create_cmd_node(char *str)
 {
     t_cmd *new_node = malloc(sizeof(t_cmd));

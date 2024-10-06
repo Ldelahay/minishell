@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <signal.h>
+#include <limits.h>
 #include <unistd.h>
 #include <sys/wait.h>
 #include <sys/types.h>
@@ -79,8 +80,11 @@ int     forking(t_cmd *cmd_list);
 int     need_fork(char **args);
 
 //BUILT-INS
+int builtin_check(char **args);
 void    ft_echo(char **strs, int n); // Only in the first version, consider if needed
 int     change_dir(char **args);
+int     ft_pwd(void);
+
 
 //PIPES
 int     piper(t_cmd *cmd_list);

@@ -2,21 +2,21 @@
 
 int execute(t_cmd *cmd_list)
 { // CHECK FOR BUILTINS HERE
-    if (gestion_commande(cmd_list) == 0)
+    if(gestion_commande(cmd_list) == 0)
         return 0;
     return 1;
 }
 
 int gestion_commande(t_cmd *cmd_list)
 {
+    if (builtin_check(cmd_list_to_argv(cmd_list)) == 1)
+        return (1);
     if (cmd_list->pipe_count > 0)
         return (piper(cmd_list));
     else if (need_fork(cmd_list_to_argv(cmd_list)) == 1)
         return (forking(cmd_list));
-    else
-        return (change_dir(cmd_list_to_argv(cmd_list))); // in cd.c need to fix cd closing program
+    return (1);
 }
-
 int forking(t_cmd *cmd_list)
 {
     int status;
