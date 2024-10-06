@@ -3,6 +3,8 @@
 char *path_finder(char *fct)
 {   
     char *path_env;
+    char *full_path;
+    char *found_path;
     char **path_dirs;
     int i;
 
@@ -13,13 +15,25 @@ char *path_finder(char *fct)
     path_dirs = div_path(path_env);
     if (path_dirs == NULL)
         return NULL;
-    while (path_dirs[i])
+    while (path_dirs[i]) // Corrected loop condition
     {
-        if (access(path_create(path_dirs[i], fct), X_OK) == 0)
-            return (path_create(path_dirs[i], fct));
-        i++;
+        full_path = path_create(path_dirs[i], fct);
+        if (access(full_path, X_OK) == 0)
+        {
+            found_path = strdup(full_path);
+            free(full_path);
+            break; // Found a valid path, break out of the loop
+        }
+        free(full_path); // Free full_path if not accessible
+        i++; // Increment i at the end of the loop
     }
-    return NULL;
+
+    // Free path_dirs array
+    for (i = 0; path_dirs[i]; i++)
+        free(path_dirs[i]);
+    free(path_dirs);
+
+    return found_path;
 }
 
 char    **div_path(char *path_env)
@@ -38,14 +52,15 @@ char    **div_path(char *path_env)
     {
         k = 0;
         path_dirs[j] = malloc(sizeof(char) * 256);
-        if (path_dirs[j] == NULL)
-            return NULL;
-        while (path_env[i] && path_env[i] != ':')
+        if (!path_dirs[j])
         {
-            path_dirs[j][k] = path_env[i];
-            i++;
-            k++;
+            while (--j >= 0)
+                free(path_dirs[j]);
+            free(path_dirs);
+            return NULL;
         }
+        while (path_env[i] && path_env[i] != ':')
+            path_dirs[j][k++] = path_env[i++];
         path_dirs[j][k] = '\0';
         j++;
         if (path_env[i] == ':')
@@ -63,7 +78,7 @@ char   *path_create(char *path_dir, char *fct)
 
     i = 0;
     j = 0;
-    path = malloc(sizeof(char) * 256);
+    path = my_calloc(256, sizeof(char));
     if (path == NULL)
         return NULL;
     while (path_dir[i] && (my_strncmp_from_index(path_dir, fct, i) != 0))

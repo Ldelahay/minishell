@@ -59,6 +59,7 @@ void *ft_memset(void *ptr, int value, size_t num);
 void ft_putstr(char *s); // Only in the first version, consider if needed
 char *ft_strchr(const char *str, int search_str);
 char *ft_strdup(const char *s1);
+void *my_calloc(size_t num, size_t size);
 int ft_strcmp(const char *s1, const char *s2);
 int ft_strlen(char *str);
 
@@ -79,7 +80,7 @@ int     need_fork(char **args);
 
 //BUILT-INS
 void    ft_echo(char **strs, int n); // Only in the first version, consider if needed
-int     change_dir(t_cmd *cmd_list);
+int     change_dir(char **args);
 
 //PIPES
 int     piper(t_cmd *cmd_list);

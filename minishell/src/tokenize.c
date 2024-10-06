@@ -10,6 +10,8 @@ void handle_quote(char *line, char *token, int *j, int *i)
     char quote_type = line[*i];
     (*i)++; // Move past the opening quote
 
+    if (line[*i] == quote_type)
+        (*i)++;
     while (line[*i] != '\0')
     {
         if (line[*i] == quote_type)
@@ -25,8 +27,7 @@ void handle_quote(char *line, char *token, int *j, int *i)
         }
         (*i)++;
     }
-    // If the loop exits without finding a closing quote, we simply return.
-    // This effectively ignores the unclosed quote.
+    token[*j] = '\0';
 }
 
 void toker(char *line, t_cmd **cmd_list)

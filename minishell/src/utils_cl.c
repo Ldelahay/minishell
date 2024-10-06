@@ -40,13 +40,8 @@ int exec_cl(t_cmd *cmd_list)
     if (args == NULL)
         return -1;
     path = path_finder(args[0]);
-    if (path == NULL)
-    {
-        free (args);
-        fprintf(stderr, "Command not found\n");
-        return -1;
-    }
     int r = execve(path, args, environ);
-    free(args);
+    if (r == -1)
+        perror("execve error");
     return r;
 }
