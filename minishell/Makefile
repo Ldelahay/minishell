@@ -21,11 +21,13 @@ HEAD = inc/minishell.h -I/usr/local/include/readline/readline.h
 all: $(NAME)
 
 $(NAME): $(OBJ_FILES)
-	$(CC) $(CFLAGS) $(OBJ_FILES) -o $@ $(LDFLAGS)  
+	@printf "Compiling %s                                             \r" $<
+	@$(CC) $(CFLAGS) $(OBJ_FILES) -o $@ $(LDFLAGS)  
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
+	@printf "Compiling %s                                             \r" $<
 	@mkdir -p $(@D)
-	$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)

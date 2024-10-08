@@ -19,6 +19,14 @@ int ft_strcmp(const char *s1, const char *s2)
     }
     return (unsigned char)*s1 - (unsigned char)*s2;
 }
+void ft_memdel(void **ap)
+{
+    if (ap && *ap)
+    {
+        free(*ap); // Free the allocated memory
+        *ap = NULL; // Set the pointer to NULL to avoid dangling pointer issues
+    }
+}
 
 void *my_calloc(size_t num, size_t size)
 {
@@ -28,4 +36,18 @@ void *my_calloc(size_t num, size_t size)
         ft_memset(ptr, 0, totalSize);
     }
     return ptr;
+}
+
+int ft_strncmp(const char *s1, const char *s2, size_t n)
+{
+    while (n && *s1 && (*s1 == *s2)) {
+        s1++;
+        s2++;
+        n--;
+    }
+    if (n == 0) {
+        return 0;
+    } else {
+        return (*(unsigned char *)s1 - *(unsigned char *)s2);
+    }
 }

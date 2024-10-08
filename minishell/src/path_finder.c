@@ -9,6 +9,7 @@ char *path_finder(char *fct)
     int i;
 
     i = 0;
+    found_path = NULL;
     path_env = getenv("PATH");
     if (path_env == NULL)
         return NULL;
