@@ -32,7 +32,8 @@ static void minishell(t_cmd **cmd_list, t_env_var *env_list)
 			add_history(line);
 		toker(line, cmd_list);
 		get_cmd_types(*cmd_list);
-		pipe_parsing(*cmd_list); // Use pipe_parsing from the second main
+		if (*cmd_list != NULL)
+			pipe_parsing(*cmd_list); // Use pipe_parsing from the second main
 		status = execute(*cmd_list, env_list);
 		free(line);
 		free_cmds(*cmd_list);
