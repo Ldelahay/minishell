@@ -2,22 +2,18 @@
 
 int piper(t_cmd *cmd_list, t_env_var *env_list)
 {
-	//printf("Debug: Entering piper\n");
 	int r;
 
 	if (cmd_list == NULL)
 	{
-		//printf("Debug: cmd_list is NULL\n");
 		return 0;
 	}
 	r = exec_pipes(cmd_list, env_list);
-	//printf("Debug: Exiting piper with result %d\n", r);
 	return r;
 }
 
 int init_pipes(int pipe_count, int pipefd[][2])
 {
-	//printf("Debug: Initializing %d pipes\n", pipe_count);
 	int i;
 
 	i = 0;
@@ -30,18 +26,17 @@ int init_pipes(int pipe_count, int pipefd[][2])
 		}
 		i++;
 	}
-	//printf("Debug: Pipes initialized successfully\n");
 	return 1;
 }
 
 int exec_child_process(t_cmd *cmd_list, t_env_var *env_list, int i, int pipefd[][2])
 {
-	//printf("Debug: Entering exec_child_process for command index %d\n", i);
 	int j;
 	t_cmd *current;
 
+	j = 0;
 	current = pipe_next_index(cmd_list, i);
-	//printf("Debug: Current command index %d\n", current->command_index);
+	printf("%d\n", i);
 	if (i > 0)
 		dup2(pipefd[i - 1][0], STDIN_FILENO);
 	if (i < cmd_list->pipe_count)
@@ -49,23 +44,23 @@ int exec_child_process(t_cmd *cmd_list, t_env_var *env_list, int i, int pipefd[]
 	for (j = 0; j < cmd_list->pipe_count; j++)
 	{
 		if (j != i - 1) // Ne pas fermer pipefd[i - 1][0] car il est utilisé pour STDIN
-            close(pipefd[j][0]);
-        if (j != i) // Ne pas fermer pipefd[i][1] car il est utilisé pour STDOUT
-            close(pipefd[j][1]);
+			close(pipefd[j][0]);
+		if (j != i) // Ne pas fermer pipefd[i][1] car il est utilisé pour STDOUT
+			close(pipefd[j][1]);
 	}
 	char **command = generate_command(current);
-	//printf("Debug: Executing command %s\n", command[0]);
 	if (execve(path_finder(command[0]), command, env_list->name) == -1)
 	{
 		printf("minishell: execve failure\n");
 		exit(EXIT_FAILURE);
 	}
+	//close(pipefd[i - 1][0]);
+	//close(pipefd[i][1]);
 	return 1; // This line is technically unreachable
 }
 
 void close_pipes_in_parent(int pipe_count, int pipefd[][2], int i)
 {
-	//printf("Debug: Closing pipes in parent for command index %d\n", i);
 	if (i > 0)
 		close(pipefd[i - 1][0]);
 	if (i < pipe_count)
@@ -74,7 +69,6 @@ void close_pipes_in_parent(int pipe_count, int pipefd[][2], int i)
 
 int wait_for_children(int pipe_count, pid_t pid[])
 {
-	//printf("Debug: Waiting for %d children\n", pipe_count + 1);
 	int status;
 	for (int i = 0; i <= pipe_count; i++) {
 		if (waitpid(pid[i], &status, 0) == -1) {
@@ -82,13 +76,11 @@ int wait_for_children(int pipe_count, pid_t pid[])
 			return 0;
 		}
 	}
-	//printf("Debug: All children have exited\n");
 	return 1;
 }
 
 int exec_pipes(t_cmd *cmd_list, t_env_var *env_list)
 {
-	//printf("Debug: Executing pipes for command list\n");
 	int pipefd[cmd_list->pipe_count][2];
 	pid_t pid[cmd_list->pipe_count + 1];
 	int i;
@@ -99,7 +91,6 @@ int exec_pipes(t_cmd *cmd_list, t_env_var *env_list)
 	i = 0;
 	while (i < cmd_list->pipe_count + 1)
 	{
-		printf("Debug: Forking for command index %d\n", i);
 		pid[i] = fork();
 		if (pid[i] == -1)
 			return 0;

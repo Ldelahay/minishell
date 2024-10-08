@@ -5,9 +5,9 @@ static void print_cmd_list(t_cmd *cmd_list) {
     t_cmd *current = cmd_list;
     while (current != NULL) {
         if (current->str != NULL) {
-            printf("Command: %s\n", current->str);
+            //printf("Command: %s\n", current->str);
         } else {
-            printf("Command is NULL\n");
+            //printf("Command is NULL\n");
         }
         current = current->next;
     }
@@ -17,28 +17,28 @@ static void print_cmd_types(t_cmd *cmd_list) {
     while (cmd_list != NULL) {
         switch (cmd_list->type) {
             case CMD_TYPE_PIPE:
-                printf("CMD_TYPE_PIPE\n");
+                //printf("CMD_TYPE_PIPE\n");
                 break;
             case CMD_TYPE_REDIRECT_IN:
-                printf("CMD_TYPE_REDIRECT_IN\n");
+                //printf("CMD_TYPE_REDIRECT_IN\n");
                 break;
             case CMD_TYPE_REDIRECT_OUT:
-                printf("CMD_TYPE_REDIRECT_OUT\n");
+                //printf("CMD_TYPE_REDIRECT_OUT\n");
                 break;
             case CMD_TYPE_REDIRECT_APPEND:
-                printf("CMD_TYPE_REDIRECT_APPEND\n");
+                //printf("CMD_TYPE_REDIRECT_APPEND\n");
                 break;
             case CMD_TYPE_REDIRECT_IN_SYMBOL:
-                printf("CMD_TYPE_REDIRECT_IN_SYMBOL\n");
+                //printf("CMD_TYPE_REDIRECT_IN_SYMBOL\n");
                 break;
             case CMD_TYPE_COMMAND:
-                printf("CMD_TYPE_COMMAND\n");
+                //printf("CMD_TYPE_COMMAND\n");
                 break;
             case CMD_TYPE_ARG:
-                printf("CMD_TYPE_ARG\n");
+                //printf("CMD_TYPE_ARG\n");
                 break;
             default:
-                printf("Unknown Command Type\n");
+                //printf("Unknown Command Type\n");
         }
         cmd_list = cmd_list->next;
     }

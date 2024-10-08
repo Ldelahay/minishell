@@ -58,9 +58,7 @@ int main(int argc, char **argv)
 {
 	t_cmd **cmd_list;
 	t_env_var *env_list;
-	char *original_term;
 
-	original_term = getenv("TERM");
 	env_list = malloc(sizeof(t_env_var));
 	init_env(env_list);
 	(void)argc;
@@ -75,14 +73,7 @@ int main(int argc, char **argv)
 		return 1; // Exit if memory allocation fails
 	}
 	*cmd_list = NULL; // Ensure the list is initially empty
-	unset_env(env_list, "TERM");
-	set_env(env_list, "TERM", "vt100");
 	minishell(cmd_list, env_list);
-	if (original_term)
-	{
-		unset_env(env_list, "TERM");
-		set_env(env_list, "TERM", original_term);
-	}
 	free(cmd_list);
 	return 0;
 }

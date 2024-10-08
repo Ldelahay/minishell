@@ -30,13 +30,16 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJ_DIR):
-	mkdir -p $(OBJ_DIR)
+	@mkdir -p $(OBJ_DIR)
 
 clean:
-	rm -rf $(OBJ_DIR)
+	@rm -rf $(OBJ_DIR)
+	@printf "Object files removed\n"
 
 fclean: clean
-	rm -f $(NAME)
+	@rm -f $(NAME)
+	@printf "Executable removed\n"
+
 
 re: fclean all
 
