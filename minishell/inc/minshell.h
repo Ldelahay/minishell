@@ -103,6 +103,10 @@ int handle_redirections(t_cmd *cmd_list);
 
 //PIPES
 int     piper(t_cmd *cmd_list, t_env_var *env_list);
+int     init_pipes(int pipe_count, int pipefd[][2]);
+int    exec_child_process(t_cmd *cmd_list, t_env_var *env_list, int i, int pipefd[][2]);
+void    close_pipes_in_parent(int pipe_count, int pipefd[][2], int i);
+int     wait_for_children(int pipe_count, pid_t pid[]);
 int     exec_pipes(t_cmd *cmd_list, t_env_var *env_list);
 void    pipe_indexer(t_cmd *cmd_list);
 char    **generate_command(t_cmd *cmd_list);

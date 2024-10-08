@@ -1,8 +1,7 @@
 #include "../inc/minshell.h"
 
-extern char **environ;
-
-void print_env(t_env_var *env_list) {
+void print_env(t_env_var *env_list)
+{
     int i = 0;
     while (env_list->name[i] != NULL) {
         printf("%s\n", env_list->name[i]);
@@ -69,7 +68,8 @@ void unset_env(t_env_var *env_list, const char *var) {
     }
 }
 
-void init_env(t_env_var *env_list) {
+void init_env(t_env_var *env_list)
+{
     int i = 0;
     int count = 0;
 
